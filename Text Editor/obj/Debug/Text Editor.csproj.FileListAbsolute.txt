@@ -77,3 +77,22 @@ G:\IDE\Text Editor\obj\Debug\Text_Editor.Properties.Resources.resources
 G:\IDE\Text Editor\obj\Debug\Text Editor.csproj.GenerateResource.Cache
 G:\IDE\Text Editor\obj\Debug\Text Editor.exe.manifest
 G:\IDE\Text Editor\obj\Debug\Text Editor.application
+D:\IDE\Text Editor\bin\Debug\Text Editor.exe.config
+D:\IDE\Text Editor\obj\Debug\Text Editor.exe
+D:\IDE\Text Editor\obj\Debug\Text Editor.pdb
+D:\IDE\Text Editor\obj\Debug\Text Editor.csprojResolveAssemblyReference.cache
+D:\IDE\Text Editor\obj\Debug\Text_Editor.Font.resources
+D:\IDE\Text Editor\obj\Debug\Text_Editor.Main_Form.resources
+D:\IDE\Text Editor\obj\Debug\Text_Editor.Properties.Resources.resources
+D:\IDE\Text Editor\obj\Debug\Text Editor.csproj.GenerateResource.Cache
+D:\IDE\Text Editor\bin\Debug\Text Editor.exe.manifest
+D:\IDE\Text Editor\bin\Debug\Text Editor.application
+D:\IDE\Text Editor\bin\Debug\Text Editor.exe
+D:\IDE\Text Editor\bin\Debug\Text Editor.pdb
+D:\IDE\Text Editor\bin\Debug\AutocompleteMenu-ScintillaNET.dll
+D:\IDE\Text Editor\bin\Debug\ScintillaNET.dll
+D:\IDE\Text Editor\bin\Debug\AutocompleteMenu.pdb
+D:\IDE\Text Editor\bin\Debug\ScintillaNET.xml
+D:\IDE\Text Editor\bin\Debug\scintillanet findreplacedialog.xml
+D:\IDE\Text Editor\obj\Debug\Text Editor.exe.manifest
+D:\IDE\Text Editor\obj\Debug\Text Editor.application

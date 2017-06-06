@@ -12,6 +12,8 @@ using ScintillaNET_FindReplaceDialog;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Drawing.Printing;
+
 namespace Text_Editor
 {
     public partial class Main_Form : Form
@@ -994,5 +996,33 @@ namespace Text_Editor
         {
             textarea.DeleteRange(textarea.SelectionStart,textarea.SelectedText.Length);
         }
+
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                PrintDocument pd = new PrintDocument();
+                pd.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
+                pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
+                pd.Print();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while printing", ex.ToString());
+            }
+        }
+
+        private void pd_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            PrintDocument pd = new PrintDocument();
+            //pd.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
+            pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
+
+            System.Windows.Forms.PrintDialog p = new System.Windows.Forms.PrintDialog();
+            p.Document = pd;
+            if (p.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                pd.Print();
+        }
+    
     }
 }
