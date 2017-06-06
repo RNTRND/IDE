@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,8 @@ namespace Text_Editor
     {
         public String generateWorldList()
         {
-            string[] snippets = { "False", "None", "True", "and", "as", "assert", "break", "class", "continue", "def", "del", "elif", "else", "except", "finally", "for", "from", "global", "if", "import", "in", "is", "lambda", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield" };
+           // FileStream fr = new FileStream("keyWords.txt", FileMode.Open, FileAccess.Read, FileShare.Read);
+            string[] snippets = File.ReadAllText( Path.Combine(Environment.CurrentDirectory, "..\\..\\keyWords.txt")).Split(new Char[] { ' ' });
             Array.Sort(snippets);
             String AutoCompleteWords = string.Join(" ",snippets);
             return AutoCompleteWords;

@@ -28,14 +28,15 @@ namespace Text_Editor
         const int LEADING_SPACE = 12;
         const int CLOSE_SPACE = 15;
         const int CLOSE_AREA = 15;
-
+        private string words;
         public Main_Form()
         {
             InitializeComponent();
             NewDocument(false);
 
             fr = new FindReplace(textarea);
-            
+            wordList w = new wordList();
+            words = w.generateWorldList();
             fontDlg.ShowColor = true;
             fontDlg.ShowApply = true;
             fontDlg.ShowEffects = true;
@@ -110,10 +111,10 @@ namespace Text_Editor
             textarea.ViewWhitespace = WhitespaceMode.VisibleAlways;
 
             //var python = "and as assert break class continue def del elif else except exec finally for from global if import in is lambda not or pass print raise return try while with yield var char int";
-            var python = "False None True and as assert break class continue def del elif else except finally for from global if import in is lambda nonlocal not or pass raise return try while with yield";
+           
             var cython = "cdef cimport cpdef";
 
-            textarea.SetKeywords(0, python + " " + cython);
+            textarea.SetKeywords(0, words + " " + cython);
             
         }
 
@@ -474,7 +475,7 @@ namespace Text_Editor
         {
             try
             {
-                wordList w = new wordList();
+             
                 int currentPos = textarea.CurrentPosition;
                 int wordStartPos = textarea.WordStartPosition(currentPos, true);
                 //var firstChar = textarea.GetCharAt(currentPos);
@@ -483,8 +484,8 @@ namespace Text_Editor
                 //textarea.Text = a;
                 //textarea.AppendText(a);
                 var lenEntered = currentPos - wordStartPos;
-                string words = w.generateWorldList();
-                string[] typeMatch = new string[25];
+                
+                //string[] typeMatch = new string[25];
                 //int i = 0;
                 //console.Text = firstChar.ToString();
                 //console.Text = words; 
@@ -899,8 +900,31 @@ namespace Text_Editor
             this.textarea.EndUndoAction();
         }
 
-        private void foldToolStripMenuItem_Click(object sender, EventArgs e)
+        private void outdentToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
+            textarea.BeginUndoAction();
+            multiPurposeFunction("\t", "\n", 0);
+            multiPurposeFunction("\t", "\n", 0);
+            multiPurposeFunction("\t", "\n", 0);
+            textarea.EndUndoAction();
+        }
+
+        private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+            textarea.AnchorPosition = textarea.CurrentPosition = 1;
+            textarea.ScrollCaret();
+            textarea.Focus();
+        }
+
+        private void findAndReplaceToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            fr.ShowReplace();
+        }
+
+        private void foldToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
             // Set the lexer
             textarea.Lexer = Lexer.Python;
 
@@ -933,8 +957,9 @@ namespace Text_Editor
             textarea.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Change | AutomaticFold.Click);
         }
 
-        private void unfoldToolStripMenuItem_Click(object sender, EventArgs e)
+        private void unfoldToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+
             // Set the lexer
             textarea.Lexer = Lexer.Python;
 
@@ -964,29 +989,11 @@ namespace Text_Editor
             textarea.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
             textarea.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
 
-            textarea.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Click | AutomaticFold.None);
+            textarea.AutomaticFold = (AutomaticFold.Show | AutomaticFold.None);
         }
-
-        private void outdentToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            textarea.BeginUndoAction();
-            multiPurposeFunction("\t", "\n", 0);
-            multiPurposeFunction("\t", "\n", 0);
-            multiPurposeFunction("\t", "\n", 0);
-            textarea.EndUndoAction();
-        }
-
-        private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-           
-            textarea.AnchorPosition = textarea.CurrentPosition = 1;
-            textarea.ScrollCaret();
-            textarea.Focus();
-        }
-
-        private void findAndReplaceToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            fr.ShowReplace();
+            textarea.DeleteRange(textarea.SelectionStart,textarea.SelectedText.Length);
         }
     }
 }
