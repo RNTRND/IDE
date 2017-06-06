@@ -16,7 +16,8 @@ namespace Text_Editor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main_Form());
+            Application.Run(new Main_Form());   //Running the main form
+
         }
     }
 }
