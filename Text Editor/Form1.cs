@@ -185,7 +185,7 @@ namespace Text_Editor
         {
             if (string.IsNullOrEmpty(path))
             {
-                using (SaveFileDialog sv = new SaveFileDialog() { Filter = "Text files |*.txt", ValidateNames = true, Title = "Save Text Files", DefaultExt = "txt", RestoreDirectory = true })
+                using (SaveFileDialog sv = new SaveFileDialog() { Filter = "Text files |*.txt", ValidateNames = true, Title = "Save Text Files", DefaultExt = "py", RestoreDirectory = true })
                 {
                     if (sv.ShowDialog() == DialogResult.OK)
                     {
@@ -333,8 +333,7 @@ namespace Text_Editor
                 }
                 //Nothing is done when cancel is clicked
             }
-            else
-            {
+       
                 String pypath = "";
                 using (OpenFileDialog of = new OpenFileDialog() { Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*", Multiselect = false, ValidateNames = true, RestoreDirectory = true, Title = "Browse Files" })
                 {
@@ -384,7 +383,7 @@ namespace Text_Editor
 
                 // write the output we got from python app 
                 //console.Text = myString;
-            }
+            
         }
 
         private void Main_Form_FormClosing(object sender, FormClosingEventArgs e)
