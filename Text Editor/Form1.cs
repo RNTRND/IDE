@@ -12,6 +12,8 @@ using ScintillaNET_FindReplaceDialog;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Drawing.Printing;
+
 namespace Text_Editor
 {
     public partial class Main_Form : Form
@@ -45,7 +47,7 @@ namespace Text_Editor
             textarea.StyleResetDefault();
             textarea.Styles[Style.Default].Font = "Consolas";
             textarea.Styles[Style.Default].Size = 10;
-            textarea.StyleClearAll();
+            //textarea.StyleClearAll();
 
             textarea.Lexer = Lexer.Python;
 
@@ -994,5 +996,45 @@ namespace Text_Editor
         {
             textarea.DeleteRange(textarea.SelectionStart,textarea.SelectedText.Length);
         }
+
+<<<<<<< HEAD
+        private void fontToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+            fontDlg.ShowDialog();
+
+            textarea.StyleResetDefault();
+            textarea.Styles[Style.Default].Font = fontDlg.Font.Name.ToString();
+            textarea.Styles[Style.Default].Size = (int)fontDlg.Font.Size;
+        }
+=======
+        private void printToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                PrintDocument pd = new PrintDocument();
+                pd.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
+                pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
+                pd.Print();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while printing", ex.ToString());
+            }
+        }
+
+        private void pd_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            PrintDocument pd = new PrintDocument();
+            //pd.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
+            pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
+
+            System.Windows.Forms.PrintDialog p = new System.Windows.Forms.PrintDialog();
+            p.Document = pd;
+            if (p.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                pd.Print();
+        }
+    
+>>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
     }
 }
