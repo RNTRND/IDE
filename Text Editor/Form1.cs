@@ -998,6 +998,7 @@ namespace Text_Editor
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         private void fontToolStripMenuItem1_Click(object sender, EventArgs e)
         {
 
@@ -1008,6 +1009,8 @@ namespace Text_Editor
             textarea.Styles[Style.Default].Size = (int)fontDlg.Font.Size;
         }
 =======
+=======
+>>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -1035,6 +1038,9 @@ namespace Text_Editor
                 pd.Print();
         }
     
+<<<<<<< HEAD
+>>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
+=======
 >>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
     }
 }
