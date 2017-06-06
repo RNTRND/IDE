@@ -1,0 +1,62 @@
+G:\software_1\Text Editor\Text Editor\bin\Debug\Text Editor.exe.config
+G:\software_1\Text Editor\Text Editor\bin\Debug\Text Editor.exe
+G:\software_1\Text Editor\Text Editor\bin\Debug\Text Editor.pdb
+G:\software_1\Text Editor\Text Editor\bin\Debug\ScintillaNET.dll
+G:\software_1\Text Editor\Text Editor\bin\Debug\ScintillaNET.xml
+G:\software_1\Text Editor\Text Editor\obj\Debug\Text Editor.csprojResolveAssemblyReference.cache
+G:\software_1\Text Editor\Text Editor\obj\Debug\Text_Editor.Properties.Resources.resources
+G:\software_1\Text Editor\Text Editor\obj\Debug\Text Editor.csproj.GenerateResource.Cache
+G:\software_1\Text Editor\Text Editor\obj\Debug\Text Editor.exe
+G:\software_1\Text Editor\Text Editor\obj\Debug\Text Editor.pdb
+G:\software_1\Text Editor\Text Editor\obj\Debug\Text_Editor.Main_Form.resources
+G:\software_1\Text Editor\Text Editor\bin\Debug\Text Editor.exe.manifest
+G:\software_1\Text Editor\Text Editor\bin\Debug\Text Editor.application
+G:\software_1\Text Editor\Text Editor\obj\Debug\Text Editor.exe.manifest
+G:\software_1\Text Editor\Text Editor\obj\Debug\Text Editor.application
+G:\software_1\Text Editor\Text Editor\bin\Debug\AutocompleteMenu.dll
+G:\software_1\Text Editor\Text Editor\bin\Debug\AutocompleteMenu.pdb
+G:\software_1\Text Editor\Text Editor\bin\Debug\AutocompleteMenu-ScintillaNET.dll
+G:\software_1\Text Editor\Text Editor\obj\Debug\Text_Editor.Find.resources
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\Text Editor.exe.config
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\obj\Debug\Text Editor.exe
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\obj\Debug\Text Editor.pdb
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\obj\Debug\Text Editor.csprojResolveAssemblyReference.cache
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\obj\Debug\Text_Editor.Main_Form.resources
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\obj\Debug\Text_Editor.Properties.Resources.resources
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\obj\Debug\Text Editor.csproj.GenerateResource.Cache
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\Text Editor.exe.manifest
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\Text Editor.application
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\Text Editor.exe
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\Text Editor.pdb
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\AutocompleteMenu-ScintillaNET.dll
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\ScintillaNET.dll
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\AutocompleteMenu.pdb
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\ScintillaNET.xml
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\obj\Debug\Text Editor.exe.manifest
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\obj\Debug\Text Editor.application
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\obj\Debug\Text_Editor.Font.resources
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\scintillanet findreplacedialog.dll
+C:\Users\Chinmay\Documents\Visual Studio 2015\Projects\Text Editor\Text Editor\bin\Debug\scintillanet findreplacedialog.xml
+G:\Text Editor\Text Editor\bin\Debug\Text Editor.exe.config
+G:\Text Editor\Text Editor\obj\Debug\Text Editor.exe
+G:\Text Editor\Text Editor\obj\Debug\Text Editor.pdb
+G:\Text Editor\Text Editor\bin\Debug\Text Editor.exe.manifest
+G:\Text Editor\Text Editor\bin\Debug\Text Editor.application
+G:\Text Editor\Text Editor\bin\Debug\Text Editor.exe
+G:\Text Editor\Text Editor\bin\Debug\Text Editor.pdb
+G:\Text Editor\Text Editor\bin\Debug\AutocompleteMenu-ScintillaNET.dll
+G:\Text Editor\Text Editor\bin\Debug\AutocompleteMenu.dll
+G:\Text Editor\Text Editor\bin\Debug\ScintillaNET.dll
+G:\Text Editor\Text Editor\bin\Debug\AutocompleteMenu.pdb
+G:\Text Editor\Text Editor\bin\Debug\ScintillaNET.xml
+G:\Text Editor\Text Editor\bin\Debug\scintillanet findreplacedialog.xml
+G:\Text Editor\Text Editor\obj\Debug\Text Editor.csprojResolveAssemblyReference.cache
+G:\Text Editor\Text Editor\obj\Debug\Text_Editor.Font.resources
+G:\Text Editor\Text Editor\obj\Debug\Text_Editor.Main_Form.resources
+G:\Text Editor\Text Editor\obj\Debug\Text_Editor.Properties.Resources.resources
+G:\Text Editor\Text Editor\obj\Debug\Text Editor.csproj.GenerateResource.Cache
+G:\Text Editor\Text Editor\obj\Debug\Text Editor.exe.manifest
+G:\Text Editor\Text Editor\obj\Debug\Text Editor.application
+G:\IDE\Text Editor\bin\Debug\Text Editor.exe.config
+G:\IDE\Text Editor\obj\Debug\Text Editor.exe
+G:\IDE\Text Editor\obj\Debug\Text Editor.pdb

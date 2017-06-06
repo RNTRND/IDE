@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>AutoCompleteMenu-ScintillaNET</id>
+    <version>1.5.0</version>
+    <title>AutoCompleteMenu-ScintillaNET</title>
+    <authors>Ahmed Mamdouh</authors>
+    <owners>Ahmed Mamdouh</owners>
+    <licenseUrl>http://www.opensource.org/licenses/lgpl-3.0.html</licenseUrl>
+    <projectUrl>https://github.com/JohnyMac/AutoCompleteMenu-ScintillaNET</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is an AutoCompleteMenu based on this: 
+    http://www.codeproject.com/Articles/365974/Autocomplete-Menu - ByPavel Torgashov
+    
+    The main added feature is SctintillaNET wrapper and also fixed several bugs that can be seen in GitHub.</description>
+    <summary />
+    <releaseNotes>Added wrapper for ScintillaNET and fixes several bugs.</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>AutoCompleteMenu ScintillaNET</tags>
+    <dependencies>
+      <dependency id="jacobslusser.ScintillaNET" version="3.5.10" />
+    </dependencies>
+  </metadata>
+</package>
