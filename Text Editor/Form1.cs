@@ -31,6 +31,8 @@ namespace Text_Editor
         const int CLOSE_SPACE = 15;
         const int CLOSE_AREA = 15;
         private string words;
+        string tabname;
+        
         public Main_Form()
         {
             InitializeComponent();
@@ -119,12 +121,11 @@ namespace Text_Editor
             textarea.SetKeywords(0, words + " " + cython);
             
         }
-
+        #region File
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewDocument(true);
         }
-
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog of = new OpenFileDialog() { Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*", Multiselect = false, ValidateNames = true, RestoreDirectory = true, Title = "Browse Text Files", DefaultExt = "txt" })
@@ -171,8 +172,8 @@ namespace Text_Editor
                             Task<string> str = reader.ReadToEndAsync();
                             newTab.Text = str.Result;
                            
-                            string name = System.IO.Path.GetFileName(of.FileName);
-                            tabControl1.SelectedTab.Text = name;
+                             tabname = System.IO.Path.GetFileName(of.FileName);
+                            tabControl1.SelectedTab.Text = tabname;
                         }
                         catch (Exception ex)
                         {
@@ -261,7 +262,62 @@ namespace Text_Editor
 
             }
         }
+        private void closeTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("Save before exiting?", "Exit?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (dr == DialogResult.Yes)
+            {
+                saveToolStripMenuItem_Click(sender, e);
+                this.tabControl1.TabPages.Remove(this.tabControl1.SelectedTab);
+                Main_Form.ActiveForm.Text = "Text Editor";
+            }
+            else if (dr == DialogResult.No)
+            {
+                this.tabControl1.TabPages.Remove(this.tabControl1.SelectedTab);
+            }
 
+        }
+
+        private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < this.tabControl1.TabCount; i++)
+            {
+                if (i != tabControl1.SelectedIndex)
+                {
+                    if (textarea.Modified == true)
+                    {
+                        DialogResult dr = MessageBox.Show("Save before exiting?", "Exit?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                        if (dr == DialogResult.Yes)
+                        {
+                            saveToolStripMenuItem_Click(sender, e);
+                            Main_Form.ActiveForm.Text = "Text Editor";
+                            tabControl1.TabPages.RemoveAt(i--);
+                        }
+                        else if (dr == System.Windows.Forms.DialogResult.No)
+                        {
+                            Main_Form.ActiveForm.Text = "Text Editor";
+                            tabControl1.TabPages.RemoveAt(i--);
+                        }
+                        else if (dr == System.Windows.Forms.DialogResult.Cancel)
+                        {
+                            break;
+                        }
+
+                    }
+                    else
+                    {
+                        tabControl1.TabPages.RemoveAt(i--);
+
+                        tabCount--;
+                    }
+
+                }
+                tabControl1.SelectedTab.Text = "new";
+            }
+            // Application.Exit();
+
+
+        }
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (textarea.Modified == false && string.IsNullOrEmpty(path))
@@ -277,53 +333,196 @@ namespace Text_Editor
                     Application.Exit();
                 }
                 //Application is exited when Cancel is clicked
-                else if(save_on_exit == DialogResult.No)
+                else if (save_on_exit == DialogResult.No)
                 {
                     Application.Exit();
                 }
             }
         }
-
+    
+        #endregion File
+        #region Edit
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textarea.Undo();
         }
-
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textarea.Redo();
         }
-
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textarea.Cut();
         }
-
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textarea.Copy();
         }
-
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textarea.Paste();
         }
-
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textarea.DeleteRange(textarea.SelectionStart, textarea.SelectedText.Length);
+        }
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textarea.SelectAll();
         }
-
-        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        public void findToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ColorDialog cd = new ColorDialog();
-            if (cd.ShowDialog() == DialogResult.OK)
+            fr.ShowFind();
+        }
+        private void findAndReplaceToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            fr.ShowReplace();
+        }
+        private void indentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textarea.BeginUndoAction();
+
+            multiPurposeFunction("\n", "\t", 1);
+            multiPurposeFunction("\n", "\t", 1);
+
+            textarea.EndUndoAction();
+        }
+        private void outdentToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            textarea.BeginUndoAction();
+            multiPurposeFunction("\t", "\n", 0);
+            multiPurposeFunction("\t", "\n", 0);
+            multiPurposeFunction("\t", "\n", 0);
+            textarea.EndUndoAction();
+        }
+        private void commentToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            this.textarea.BeginUndoAction();
+
+            multiPurposeFunction("\n", "# ", 1);
+            multiPurposeFunction("\n", "# ", 1);
+
+            this.textarea.EndUndoAction();
+        }
+        private void uncommentToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            this.textarea.BeginUndoAction();
+            multiPurposeFunction("# ", "\n", 0);
+            multiPurposeFunction("# ", "\n", 0);
+            this.textarea.EndUndoAction();
+        }
+        private void multiPurposeFunction(String find, String replce, int n)    //Used for indent, outdent,comment and uncomment
+        {
+            textarea.TargetStart = textarea.SelectionStart - n;
+            textarea.TargetEnd = textarea.SelectionEnd;
+            int end = textarea.TargetEnd;
+            while (textarea.SearchInTarget(find) != -1)
             {
-                //textarea.Styles[Style.Default].ForeColor = cd.Color;
-                textarea.Styles[Style.Default].BackColor = cd.Color;
+                textarea.ReplaceTarget(replce);
+
+
+                textarea.TargetStart = textarea.SelectionStart;
+                textarea.TargetEnd = end;
+
             }
+            textarea.TargetStart = 0;
+            textarea.TargetEnd = 0;
+
+
+        }   
+        #endregion 
+        #region View
+        private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textarea.ZoomIn();
+        }
+        private void zoomOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            textarea.ZoomOut();
+        }
+        private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            textarea.AnchorPosition = textarea.CurrentPosition = 1;
+            textarea.ScrollCaret();
+            textarea.Focus();
+        }
+        private void foldToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // Instruct the lexer to calculate folding
+            textarea.SetProperty("fold", "1");
+            textarea.SetProperty("fold.compact", "1");
+
+            // Configure a margin to display folding symbols
+            textarea.Margins[2].Type = MarginType.Symbol;
+            textarea.Margins[2].Mask = Marker.MaskFolders;
+            textarea.Margins[2].Sensitive = true;
+            textarea.Margins[2].Width = 20;
+
+            // Set colors for all folding markers
+            for (int i = 25; i <= 31; i++)
+            {
+                textarea.Markers[i].SetForeColor(SystemColors.ControlLightLight);
+                textarea.Markers[i].SetBackColor(SystemColors.ControlDark);
+            }
+
+            // Configure folding markers with respective symbols
+            textarea.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+            textarea.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+            textarea.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+            textarea.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+            textarea.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+            textarea.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+            textarea.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+
+            textarea.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Change | AutomaticFold.Click);
+
+        }
+        private void unfoldToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+            // Instruct the lexer to calculate folding
+            textarea.SetProperty("fold", "1");
+            textarea.SetProperty("fold.compact", "1");
+
+            // Configure a margin to display folding symbols
+            textarea.Margins[2].Type = MarginType.Symbol;
+            textarea.Margins[2].Mask = Marker.MaskFolders;
+            textarea.Margins[2].Sensitive = true;
+            textarea.Margins[2].Width = 20;
+
+            // Set colors for all folding markers
+            for (int i = 25; i <= 31; i++)
+            {
+                textarea.Markers[i].SetForeColor(SystemColors.ControlLightLight);
+                textarea.Markers[i].SetBackColor(SystemColors.ControlDark);
+            }
+
+            // Configure folding markers with respective symbols
+            textarea.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
+            textarea.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
+            textarea.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
+            textarea.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
+            textarea.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
+            textarea.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
+            textarea.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
+
+            textarea.AutomaticFold = (AutomaticFold.Show | AutomaticFold.None);
+        }
+        #endregion View
+        #region Settings    Incomplete, only font implemented
+        private void fontToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            fontDlg.ShowDialog();
+            textarea.StyleResetDefault();
+            textarea.Styles[Style.Default].Font = fontDlg.Font.Name.ToString();
+            textarea.Styles[Style.Default].Size = (int)fontDlg.Font.Size;
+            textarea.Margins[0].Width = (int)fontDlg.Font.Size + 10;
+            textarea.Margins[2].Width = (int)fontDlg.Font.Size +10;
+
         }
 
+        #endregion
         private void compileAndRunToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (textarea.Modified == true)
@@ -387,7 +586,6 @@ namespace Text_Editor
                 //console.Text = myString;
             
         }
-
         private void Main_Form_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(textarea.Modified == false && string.IsNullOrEmpty(path))
@@ -409,69 +607,6 @@ namespace Text_Editor
                     }        
             }
         }
-
-        //private static string showMatch(string text, string expr)
-        //{
-        //    try
-        //    {
-        //        MatchCollection mc = Regex.Matches(text, expr);
-        //        string[] typeMatch = new string[10];
-        //        int i = 0;
-
-
-        //        foreach (Match m in mc)
-        //        {
-        //            typeMatch[i++] = m.ToString();
-
-        //        }
-        //        String typeFinal = string.Join(" ", typeMatch);
-
-        //        return typeFinal;
-        //    }
-        //    catch( Exception e)
-        //    {
-        //        return null;
-        //    }
-
-        //}
-
-        /*private void searchList()
-        {
-
-            wordList w = new wordList();
-            string words = w.generateWorldList();
-            // Indicators 0-7 could be in use by a lexer
-            // so we'll use indicator 8 to highlight words.
-            const int NUM = 8;
-
-            // Remove all uses of our indicator
-            textarea.IndicatorCurrent = NUM;
-            textarea.IndicatorClearRange(0, textarea.TextLength);
-
-            // Update indicator appearance
-            textarea.Indicators[NUM].Style = IndicatorStyle.StraightBox;
-            textarea.Indicators[NUM].Under = true;
-            textarea.Indicators[NUM].ForeColor = Color.Green;
-            textarea.Indicators[NUM].OutlineAlpha = 50;
-            textarea.Indicators[NUM].Alpha = 30;
-
-            // Search the document
-            textarea.TargetStart = 0;
-            textarea.TargetEnd = textarea.TextLength;
-            textarea.SearchFlags = SearchFlags.None;
-            while (textarea.SearchInTarget(words) != -1)
-            {
-                // Mark the search results with the current indicator
-                words.IndicatorFillRange(words.TargetStart, words.TargetEnd - words.TargetStart);
-
-                // Search the remainder of the document
-                words.TargetStart = words.TargetEnd;
-                words.TargetEnd = words.TextLength;
-
-            }
-
-        }*/
-
         private void textarea_CharAdded(object sender, CharAddedEventArgs e)
         {
             try
@@ -479,7 +614,6 @@ namespace Text_Editor
              
                 int currentPos = textarea.CurrentPosition;
                 int wordStartPos = textarea.WordStartPosition(currentPos, true);
-                //var firstChar = textarea.GetCharAt(currentPos);
                 char firstChar = (char)textarea.GetCharAt(currentPos);
                 //String a = firstChar.ToString();
                 //textarea.Text = a;
@@ -527,52 +661,7 @@ namespace Text_Editor
             }
         }
 
-        
-        private void fontToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
-           fontDlg.ShowDialog();
-
-            
-            //if (fontDlg.ShowDialog() == DialogResult.OK & !String.IsNullOrEmpty(textarea.Text))
-            //{    
-                //textarea.Font = fontDlg.Font;
-                //textarea.BackColor = fontDlg.Color;
-
-            //textarea.Styles[Style.Default].Font = fontDlg.Font.ToString();
-            //textarea.Styles[Style.Default].ForeColor = fontDlg.Color;
-            //fontDlg.Font = null;
-            //textarea.Styles[Style.].Size = fontDlg.;
-            //textarea.StyleClearAll();
-            //}
-
-            textarea.StyleResetDefault();
-            textarea.Styles[Style.Default].Font = fontDlg.Font.ToString();
-            textarea.Styles[Style.Default].Size = 10;
-            textarea.StyleClearAll();
-
-            textarea.Lexer = Lexer.Python;
-
-            textarea.SetProperty("tab.timmy.whinge.level", "1");
-            textarea.SetProperty("fold", "1");
-
-            //line numbers
-            textarea.Margins[0].Width = 16;
-
-            // Use margin 2 for fold markers
-            textarea.Margins[2].Type = MarginType.Symbol;
-            textarea.Margins[2].Mask = Marker.MaskFolders;
-            textarea.Margins[2].Sensitive = true;
-            textarea.Margins[2].Width = 20;
-
-            // Reset folder markers
-            for (int i = Marker.FolderEnd; i <= Marker.FolderOpen; i++)
-            {
-                textarea.Markers[i].SetForeColor(SystemColors.ControlLightLight);
-                textarea.Markers[i].SetBackColor(SystemColors.ControlDark);
-            }
-        }
-        
+       
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.Graphics.DrawString("x", e.Font, Brushes.Black, e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
@@ -746,8 +835,6 @@ namespace Text_Editor
             SwitchDocument((Document)tabControl1.TabPages[currentTabIndex].Tag);
         }
 
-     
-
         private void Main_Form_Load(object sender, EventArgs e)
         {
             // get the inital length
@@ -776,271 +863,44 @@ namespace Text_Editor
             tabControl1.MouseDown += TabControl1_MouseDown;
         }
 
-        private void closeTabToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DialogResult dr = MessageBox.Show("Save before exiting?", "Exit?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) ;
-            if (dr ==  DialogResult.Yes)
-            {
-                saveToolStripMenuItem_Click(sender, e);
-                this.tabControl1.TabPages.Remove(this.tabControl1.SelectedTab);
-                Main_Form.ActiveForm.Text = "Text Editor";
-            }
-            else if(dr == DialogResult.No)
-            {
-                this.tabControl1.TabPages.Remove(this.tabControl1.SelectedTab);
-            }
-
-        }
-
-        private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < this.tabControl1.TabCount; i++)
-            {
-                if (i != tabControl1.SelectedIndex)
-                {
-                    if(textarea.Modified == true)
-                    {
-                        DialogResult dr = MessageBox.Show("Save before exiting?", "Exit?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                        if (dr == DialogResult.Yes)
-                        {
-                            saveToolStripMenuItem_Click(sender, e);
-                            Main_Form.ActiveForm.Text = "Text Editor";
-                            tabControl1.TabPages.RemoveAt(i--);
-                        }
-                        else if (dr == System.Windows.Forms.DialogResult.No)
-                        {
-                            Main_Form.ActiveForm.Text = "Text Editor";
-                            tabControl1.TabPages.RemoveAt(i--);
-                        }
-                        else if (dr == System.Windows.Forms.DialogResult.Cancel)
-                        {
-                            break;
-                        }
-                      
-                    }
-                    else
-                    {
-                        tabControl1.TabPages.RemoveAt(i--);
-                       
-                        tabCount--;
-                    }
-                  
-                }
-                tabControl1.SelectedTab.Text = "new";
-            }
-           // Application.Exit();
-
-
-        }         
-
         private void button1_Click(object sender, EventArgs e)
         {
             NewDocument(true);
         }
 
-        private void indentToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            textarea.BeginUndoAction();
-            
-            multiPurposeFunction("\n", "\t", 1);
-            multiPurposeFunction("\n", "\t", 1);
-
-            textarea.EndUndoAction();
-        }
-
-        public void findToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fr.ShowFind();
-        }
-
-        private void multiPurposeFunction(String find, String replce, int n)
-        {
-            textarea.TargetStart = textarea.SelectionStart - n;
-            textarea.TargetEnd = textarea.SelectionEnd;
-            int end = textarea.TargetEnd;
-            while (textarea.SearchInTarget(find) != -1)
-            {
-                textarea.ReplaceTarget(replce);
-
-
-                textarea.TargetStart = textarea.SelectionStart;
-                textarea.TargetEnd = end;
-
-            }
-            textarea.TargetStart = 0;
-            textarea.TargetEnd = 0;
-
-
-        }
-
-        private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            textarea.ZoomIn();
-        }
-
-        private void zoomOutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            textarea.ZoomOut();
-        }
-
-        private void commentToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            this.textarea.BeginUndoAction();
-
-            multiPurposeFunction("\n", "# ", 1);
-            multiPurposeFunction("\n", "# ", 1);
-            
-            this.textarea.EndUndoAction();
-        }
-
-        private void uncommentToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            this.textarea.BeginUndoAction();
-            multiPurposeFunction("# ", "\n", 0);
-            multiPurposeFunction("# ", "\n", 0);
-            this.textarea.EndUndoAction();
-        }
-
-        private void outdentToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            textarea.BeginUndoAction();
-            multiPurposeFunction("\t", "\n", 0);
-            multiPurposeFunction("\t", "\n", 0);
-            multiPurposeFunction("\t", "\n", 0);
-            textarea.EndUndoAction();
-        }
-
-        private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-           
-            textarea.AnchorPosition = textarea.CurrentPosition = 1;
-            textarea.ScrollCaret();
-            textarea.Focus();
-        }
-
-        private void findAndReplaceToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            fr.ShowReplace();
-        }
-
-        private void foldToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-            // Set the lexer
-            textarea.Lexer = Lexer.Python;
-
-            // Instruct the lexer to calculate folding
-            textarea.SetProperty("fold", "1");
-            textarea.SetProperty("fold.compact", "1");
-
-            // Configure a margin to display folding symbols
-            textarea.Margins[2].Type = MarginType.Symbol;
-            textarea.Margins[2].Mask = Marker.MaskFolders;
-            textarea.Margins[2].Sensitive = true;
-            textarea.Margins[2].Width = 20;
-
-            // Set colors for all folding markers
-            for (int i = 25; i <= 31; i++)
-            {
-                textarea.Markers[i].SetForeColor(SystemColors.ControlLightLight);
-                textarea.Markers[i].SetBackColor(SystemColors.ControlDark);
-            }
-
-            // Configure folding markers with respective symbols
-            textarea.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
-            textarea.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
-            textarea.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
-            textarea.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
-            textarea.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
-            textarea.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
-            textarea.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
-
-            textarea.AutomaticFold = (AutomaticFold.Show | AutomaticFold.Change | AutomaticFold.Click);
-        }
-
-        private void unfoldToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-            // Set the lexer
-            textarea.Lexer = Lexer.Python;
-
-            // Instruct the lexer to calculate folding
-            textarea.SetProperty("fold", "1");
-            textarea.SetProperty("fold.compact", "1");
-
-            // Configure a margin to display folding symbols
-            textarea.Margins[2].Type = MarginType.Symbol;
-            textarea.Margins[2].Mask = Marker.MaskFolders;
-            textarea.Margins[2].Sensitive = true;
-            textarea.Margins[2].Width = 20;
-
-            // Set colors for all folding markers
-            for (int i = 25; i <= 31; i++)
-            {
-                textarea.Markers[i].SetForeColor(SystemColors.ControlLightLight);
-                textarea.Markers[i].SetBackColor(SystemColors.ControlDark);
-            }
-
-            // Configure folding markers with respective symbols
-            textarea.Markers[Marker.Folder].Symbol = MarkerSymbol.BoxPlus;
-            textarea.Markers[Marker.FolderOpen].Symbol = MarkerSymbol.BoxMinus;
-            textarea.Markers[Marker.FolderEnd].Symbol = MarkerSymbol.BoxPlusConnected;
-            textarea.Markers[Marker.FolderMidTail].Symbol = MarkerSymbol.TCorner;
-            textarea.Markers[Marker.FolderOpenMid].Symbol = MarkerSymbol.BoxMinusConnected;
-            textarea.Markers[Marker.FolderSub].Symbol = MarkerSymbol.VLine;
-            textarea.Markers[Marker.FolderTail].Symbol = MarkerSymbol.LCorner;
-
-            textarea.AutomaticFold = (AutomaticFold.Show | AutomaticFold.None);
-        }
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            textarea.DeleteRange(textarea.SelectionStart,textarea.SelectedText.Length);
-        }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-        private void fontToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-            fontDlg.ShowDialog();
-
-            textarea.StyleResetDefault();
-            textarea.Styles[Style.Default].Font = fontDlg.Font.Name.ToString();
-            textarea.Styles[Style.Default].Size = (int)fontDlg.Font.Size;
-        }
-=======
-=======
->>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                PrintDocument pd = new PrintDocument();
-                pd.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
-                pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
-                pd.Print();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while printing", ex.ToString());
-            }
+            if (printPreviewDialog1.ShowDialog() == DialogResult.OK)
+                printDocument1.Print();
         }
 
-        private void pd_PrintPage(object sender, PrintPageEventArgs e)
+        private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
-            PrintDocument pd = new PrintDocument();
-            //pd.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
-            pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
+            string stringToPrint = textarea.Text;
+            string documentContents = stringToPrint;
+            int charactersOnPage = 0;
+            int linesPerPage = 0;
 
-            System.Windows.Forms.PrintDialog p = new System.Windows.Forms.PrintDialog();
-            p.Document = pd;
-            if (p.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                pd.Print();
+            // Sets the value of charactersOnPage to the number of characters 
+            // of stringToPrint that will fit within the bounds of the page.
+            e.Graphics.MeasureString(stringToPrint, this.Font,
+                e.MarginBounds.Size, StringFormat.GenericTypographic,
+                out charactersOnPage, out linesPerPage);
+
+            // Draws the string within the bounds of the page.
+            e.Graphics.DrawString(stringToPrint, this.Font, Brushes.Black,
+            e.MarginBounds, StringFormat.GenericTypographic);
+
+            // Remove the portion of the string that has been printed.
+            stringToPrint = stringToPrint.Substring(charactersOnPage);
+
+            // Check to see if more pages are to be printed.
+            e.HasMorePages = (stringToPrint.Length > 0);
+
+            // If there are no more pages, reset the string to be printed.
+            if (!e.HasMorePages)
+                stringToPrint = documentContents;
         }
-    
-<<<<<<< HEAD
->>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
-=======
->>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
+     
     }
 }
