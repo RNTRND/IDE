@@ -781,10 +781,10 @@ namespace Text_Editor
             textarea.ViewWhitespace = WhitespaceMode.VisibleAlways;
 
             //var python = "and as assert break class continue def del elif else except exec finally for from global if import in is lambda not or pass print raise return try while with yield var char int";
-            var python = "False None True and as assert break class continue def del elif else except finally for from global if import in is lambda nonlocal not or pass raise return try while with yield";
+            
             var cython = "cdef cimport cpdef";
 
-            textarea.SetKeywords(0, python + " " + cython);
+            textarea.SetKeywords(0, words + " " + cython);
         }
 
         public void NewDocument(bool addNewPage)
