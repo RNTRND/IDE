@@ -888,8 +888,7 @@ namespace Text_Editor
                 out charactersOnPage, out linesPerPage);
 
             // Draws the string within the bounds of the page.
-            e.Graphics.DrawString(stringToPrint, this.Font, Brushes.Black,
-            e.MarginBounds, StringFormat.GenericTypographic);
+            e.Graphics.DrawString(stringToPrint, this.Font, Brushes.Black,e.MarginBounds, StringFormat.GenericTypographic);
 
             // Remove the portion of the string that has been printed.
             stringToPrint = stringToPrint.Substring(charactersOnPage);
