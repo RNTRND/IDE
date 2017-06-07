@@ -113,11 +113,11 @@ namespace Text_Editor
             textarea.ViewWhitespace = WhitespaceMode.VisibleAlways;
 
             //var python = "and as assert break class continue def del elif else except exec finally for from global if import in is lambda not or pass print raise return try while with yield var char int";
-           
+
             var cython = "cdef cimport cpdef";
 
             textarea.SetKeywords(0, words + " " + cython);
-            
+
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -131,7 +131,7 @@ namespace Text_Editor
             {
                 if (of.ShowDialog() == DialogResult.OK)
                 {
-                    
+
                     using (StreamReader reader = new StreamReader(of.FileName))
                     {
                         try
@@ -154,9 +154,9 @@ namespace Text_Editor
                             //newTab.Margins[2].Sensitive = true;
                             //newTab.Margins[2].Width = 20;
 
-                           // path = of.FileName;
-                           // string name1 = System.IO.Path.GetFileName(of.FileName);
-                           //// tabControl1.SelectedTab.Text = name1;
+                            // path = of.FileName;
+                            // string name1 = System.IO.Path.GetFileName(of.FileName);
+                            //// tabControl1.SelectedTab.Text = name1;
 
                             var document = newTab.Document;
                             newTab.AddRefDocument(document);
@@ -170,7 +170,7 @@ namespace Text_Editor
                             path = of.FileName;
                             Task<string> str = reader.ReadToEndAsync();
                             newTab.Text = str.Result;
-                           
+
                             string name = System.IO.Path.GetFileName(of.FileName);
                             tabControl1.SelectedTab.Text = name;
                         }
@@ -198,11 +198,11 @@ namespace Text_Editor
                             tabControl1.SelectedTab.Text = name;
 
                             Main_Form.ActiveForm.Text = name + "- Text Editor";
-                           
+
                             using (StreamWriter sw = new StreamWriter(sv.FileName))
-                            {                         
+                            {
                                 await sw.WriteLineAsync(textarea.Text);
-                                
+
                             }
                         }
                         catch (Exception ex)
@@ -277,7 +277,7 @@ namespace Text_Editor
                     Application.Exit();
                 }
                 //Application is exited when Cancel is clicked
-                else if(save_on_exit == DialogResult.No)
+                else if (save_on_exit == DialogResult.No)
                 {
                     Application.Exit();
                 }
@@ -328,85 +328,85 @@ namespace Text_Editor
         {
             if (textarea.Modified == true)
             {
-                DialogResult save_before_run = MessageBox.Show("Source was modified, save before execution?", "Save Before Run?",MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                DialogResult save_before_run = MessageBox.Show("Source was modified, save before execution?", "Save Before Run?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                 if (save_before_run == DialogResult.OK)
                 {
                     saveToolStripMenuItem_Click(sender, e);
                 }
                 //Nothing is done when cancel is clicked
             }
-       
-                String pypath = "";
-                using (OpenFileDialog of = new OpenFileDialog() { Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*", Multiselect = false, ValidateNames = true, RestoreDirectory = true, Title = "Browse Files" })
+
+            String pypath = "";
+            using (OpenFileDialog of = new OpenFileDialog() { Filter = "Executable files (*.exe)|*.exe|All files (*.*)|*.*", Multiselect = false, ValidateNames = true, RestoreDirectory = true, Title = "Browse Files" })
+            {
+                if (of.ShowDialog() == DialogResult.OK)
                 {
-                    if (of.ShowDialog() == DialogResult.OK)
+                    using (StreamReader reader = new StreamReader(of.FileName))
                     {
-                        using (StreamReader reader = new StreamReader(of.FileName))
+                        try
                         {
-                            try
-                            {
-                                pypath = of.FileName;
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message, "Message: ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
+                            pypath = of.FileName;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message, "Message: ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                 }
+            }
 
 
-                // Create new process start info 
-                ProcessStartInfo Py = new ProcessStartInfo(pypath);
+            // Create new process start info 
+            ProcessStartInfo Py = new ProcessStartInfo(pypath);
 
-                // make sure we can read the output from stdout 
-                Py.UseShellExecute = false;
-                Py.RedirectStandardOutput = true;
+            // make sure we can read the output from stdout 
+            Py.UseShellExecute = false;
+            Py.RedirectStandardOutput = true;
 
-                Py.Arguments = path;
+            Py.Arguments = path;
 
-                Process PyProcess = new Process();
-                // assign start information to the process 
-                PyProcess.StartInfo = Py;
+            Process PyProcess = new Process();
+            // assign start information to the process 
+            PyProcess.StartInfo = Py;
 
-                //Console.WriteLine("Calling Python script with arguments {0} and {1}", x, y);
-                // start the process 
-                PyProcess.Start();
+            //Console.WriteLine("Calling Python script with arguments {0} and {1}", x, y);
+            // start the process 
+            PyProcess.Start();
 
-                // Read the standard output of the app we called.  
-                // in order to avoid deadlock we will read output first 
-                // and then wait for process terminate: 
-                StreamReader myStreamReader = PyProcess.StandardOutput;
-                string myString = myStreamReader.ReadToEnd();
+            // Read the standard output of the app we called.  
+            // in order to avoid deadlock we will read output first 
+            // and then wait for process terminate: 
+            StreamReader myStreamReader = PyProcess.StandardOutput;
+            string myString = myStreamReader.ReadToEnd();
 
-                // wait exit signal from the app we called and then close it. 
-                PyProcess.WaitForExit();
-                PyProcess.Close();
+            // wait exit signal from the app we called and then close it. 
+            PyProcess.WaitForExit();
+            PyProcess.Close();
 
-                // write the output we got from python app 
-                //console.Text = myString;
-            
+            // write the output we got from python app 
+            //console.Text = myString;
+
         }
 
         private void Main_Form_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(textarea.Modified == false && string.IsNullOrEmpty(path))
+            if (textarea.Modified == false && string.IsNullOrEmpty(path))
             {
                 Application.Exit();
             }
             else if (textarea.Modified == true)
             {
-                    DialogResult save_on_exit = MessageBox.Show("Save before exiting?", "Exit?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question );
-                    if (save_on_exit == System.Windows.Forms.DialogResult.Yes)
-                    {
-                        saveToolStripMenuItem_Click(sender, e);
-                        Application.Exit();
-                    }
-                    //Application is exited when Cancel is clicked
-                    else if(save_on_exit == System.Windows.Forms.DialogResult.Cancel)
-                    {
-                        e.Cancel = true;
-                    }        
+                DialogResult save_on_exit = MessageBox.Show("Save before exiting?", "Exit?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                if (save_on_exit == System.Windows.Forms.DialogResult.Yes)
+                {
+                    saveToolStripMenuItem_Click(sender, e);
+                    Application.Exit();
+                }
+                //Application is exited when Cancel is clicked
+                else if (save_on_exit == System.Windows.Forms.DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
             }
         }
 
@@ -476,7 +476,7 @@ namespace Text_Editor
         {
             try
             {
-             
+
                 int currentPos = textarea.CurrentPosition;
                 int wordStartPos = textarea.WordStartPosition(currentPos, true);
                 //var firstChar = textarea.GetCharAt(currentPos);
@@ -485,7 +485,7 @@ namespace Text_Editor
                 //textarea.Text = a;
                 //textarea.AppendText(a);
                 var lenEntered = currentPos - wordStartPos;
-                
+
                 //string[] typeMatch = new string[25];
                 //int i = 0;
                 //console.Text = firstChar.ToString();
@@ -521,23 +521,23 @@ namespace Text_Editor
                     }
                 }
             }
-            catch ( Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Message: ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        
+
         private void fontToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
-           fontDlg.ShowDialog();
 
-            
+            fontDlg.ShowDialog();
+
+
             //if (fontDlg.ShowDialog() == DialogResult.OK & !String.IsNullOrEmpty(textarea.Text))
             //{    
-                //textarea.Font = fontDlg.Font;
-                //textarea.BackColor = fontDlg.Color;
+            //textarea.Font = fontDlg.Font;
+            //textarea.BackColor = fontDlg.Color;
 
             //textarea.Styles[Style.Default].Font = fontDlg.Font.ToString();
             //textarea.Styles[Style.Default].ForeColor = fontDlg.Color;
@@ -572,7 +572,7 @@ namespace Text_Editor
                 textarea.Markers[i].SetBackColor(SystemColors.ControlDark);
             }
         }
-        
+
         private void tabControl1_DrawItem(object sender, DrawItemEventArgs e)
         {
             e.Graphics.DrawString("x", e.Font, Brushes.Black, e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
@@ -703,14 +703,14 @@ namespace Text_Editor
             if (addNewPage)
             {
                 TabPage tabPage = new TabPage(string.Format("new {0}", tabCount));
-                Scintilla newTab = new Scintilla();      
+                Scintilla newTab = new Scintilla();
 
                 tabControl1.TabPages.Add(tabPage);
                 tabPage.Controls.Add(newTab);
                 newTab.Dock = DockStyle.Fill;
 
                 init(newTab);
-              
+
                 ////line numbers
                 //newTab.Margins[0].Width = 16;
 
@@ -742,11 +742,11 @@ namespace Text_Editor
         {
             int currentTabIndex = tabControl1.SelectedIndex;
             var lastIndex = this.tabControl1.TabCount - 1;
-            
+
             SwitchDocument((Document)tabControl1.TabPages[currentTabIndex].Tag);
         }
 
-     
+
 
         private void Main_Form_Load(object sender, EventArgs e)
         {
@@ -759,7 +759,7 @@ namespace Text_Editor
                 TabPage currentPage = tabControl1.TabPages[i];
 
                 int currentTabLength = TextRenderer.MeasureText(currentPage.Text, tabControl1.Font).Width;
-                
+
                 // adjust the length for what text is written
                 currentTabLength += LEADING_SPACE + CLOSE_SPACE + CLOSE_AREA;
 
@@ -778,14 +778,14 @@ namespace Text_Editor
 
         private void closeTabToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show("Save before exiting?", "Exit?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) ;
-            if (dr ==  DialogResult.Yes)
+            DialogResult dr = MessageBox.Show("Save before exiting?", "Exit?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (dr == DialogResult.Yes)
             {
                 saveToolStripMenuItem_Click(sender, e);
                 this.tabControl1.TabPages.Remove(this.tabControl1.SelectedTab);
                 Main_Form.ActiveForm.Text = "Text Editor";
             }
-            else if(dr == DialogResult.No)
+            else if (dr == DialogResult.No)
             {
                 this.tabControl1.TabPages.Remove(this.tabControl1.SelectedTab);
             }
@@ -798,7 +798,7 @@ namespace Text_Editor
             {
                 if (i != tabControl1.SelectedIndex)
                 {
-                    if(textarea.Modified == true)
+                    if (textarea.Modified == true)
                     {
                         DialogResult dr = MessageBox.Show("Save before exiting?", "Exit?", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                         if (dr == DialogResult.Yes)
@@ -816,22 +816,22 @@ namespace Text_Editor
                         {
                             break;
                         }
-                      
+
                     }
                     else
                     {
                         tabControl1.TabPages.RemoveAt(i--);
-                       
+
                         tabCount--;
                     }
-                  
+
                 }
                 tabControl1.SelectedTab.Text = "new";
             }
-           // Application.Exit();
+            // Application.Exit();
 
 
-        }         
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -841,7 +841,7 @@ namespace Text_Editor
         private void indentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textarea.BeginUndoAction();
-            
+
             multiPurposeFunction("\n", "\t", 1);
             multiPurposeFunction("\n", "\t", 1);
 
@@ -889,7 +889,7 @@ namespace Text_Editor
 
             multiPurposeFunction("\n", "# ", 1);
             multiPurposeFunction("\n", "# ", 1);
-            
+
             this.textarea.EndUndoAction();
         }
 
@@ -912,7 +912,7 @@ namespace Text_Editor
 
         private void wordWrapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
+
             textarea.AnchorPosition = textarea.CurrentPosition = 1;
             textarea.ScrollCaret();
             textarea.Focus();
@@ -994,11 +994,9 @@ namespace Text_Editor
         }
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            textarea.DeleteRange(textarea.SelectionStart,textarea.SelectedText.Length);
+            textarea.DeleteRange(textarea.SelectionStart, textarea.SelectedText.Length);
         }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         private void fontToolStripMenuItem1_Click(object sender, EventArgs e)
         {
 
@@ -1008,39 +1006,49 @@ namespace Text_Editor
             textarea.Styles[Style.Default].Font = fontDlg.Font.Name.ToString();
             textarea.Styles[Style.Default].Size = (int)fontDlg.Font.Size;
         }
-=======
-=======
->>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
+
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
+            printDialog1.Document = ThePrintDocument;
+            string strText = this.richTextBox1.Text;
+            myReader = new StringReader(strText);
+            if (printDialog1.ShowDialog() == DialogResult.OK)
             {
-                PrintDocument pd = new PrintDocument();
-                pd.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
-                pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
-                pd.Print();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("An error occurred while printing", ex.ToString());
+                this.ThePrintDocument.Print();
             }
         }
 
-        private void pd_PrintPage(object sender, PrintPageEventArgs e)
+        void printButton_Click(object sender, EventArgs e)
         {
-            PrintDocument pd = new PrintDocument();
-            //pd.DefaultPageSettings.PaperSize = new PaperSize("A4", 827, 1169);
-            pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
-
-            System.Windows.Forms.PrintDialog p = new System.Windows.Forms.PrintDialog();
-            p.Document = pd;
-            if (p.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                pd.Print();
+            CaptureScreen();
+            printDocument1.Print();
         }
-    
-<<<<<<< HEAD
->>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
-=======
->>>>>>> e4de98a9077899d5a42887f24c3dbe76fb656995
+
+
+        Bitmap memoryImage;
+
+        private void CaptureScreen()
+        {
+            Graphics myGraphics = this.CreateGraphics();
+            Size s = this.Size;
+            memoryImage = new Bitmap(s.Width, s.Height, myGraphics);
+            Graphics memoryGraphics = Graphics.FromImage(memoryImage);
+            memoryGraphics.CopyFromScreen(this.Location.X, this.Location.Y, 0, 0, s);
+        }
+
+        private void printDocument1_PrintPage(System.Object sender,
+               System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            e.Graphics.DrawImage(memoryImage, 0, 0);
+        }
+
+
+
+        public static void Main()
+        {
+            Application.Run(new Form1());
+        }
+    }
+}
     }
 }
