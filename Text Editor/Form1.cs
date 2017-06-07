@@ -921,11 +921,6 @@ namespace Text_Editor
         {
             NewDocument(true);
         }
-
-
-
-       
-
        
         private void printToolStripMenuItem_Click(object sender, EventArgs e)
 
@@ -961,12 +956,6 @@ namespace Text_Editor
             if (!e.HasMorePages)
                 stringToPrint = documentContents;
         }
-
-       
-    
-
-
-        
     }
 }
 
