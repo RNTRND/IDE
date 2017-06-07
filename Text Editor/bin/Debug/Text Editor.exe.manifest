@@ -90,14 +90,22 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+<<<<<<< HEAD
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Text Editor.exe" size="46616">
+=======
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Text Editor.exe" size="56832">
+>>>>>>> origin/master
       <assemblyIdentity name="Text Editor" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+<<<<<<< HEAD
         <dsig:DigestValue>wRRnAM7KPX9wFZ9YBduJwRBfG8H4Vp8LIofg+qILbFk=</dsig:DigestValue>
+=======
+        <dsig:DigestValue>HYw10LWavsmuK+UvpC0F0KZBOlbikjHQSEMQ7Iz5kfk=</dsig:DigestValue>
+>>>>>>> origin/master
       </hash>
     </dependentAssembly>
   </dependency>
