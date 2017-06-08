@@ -71,7 +71,6 @@ G:\IDE\Text Editor\bin\Debug\AutocompleteMenu.pdb
 G:\IDE\Text Editor\bin\Debug\ScintillaNET.xml
 G:\IDE\Text Editor\bin\Debug\scintillanet findreplacedialog.xml
 G:\IDE\Text Editor\obj\Debug\Text Editor.csprojResolveAssemblyReference.cache
-G:\IDE\Text Editor\obj\Debug\Text_Editor.Font.resources
 G:\IDE\Text Editor\obj\Debug\Text_Editor.Main_Form.resources
 G:\IDE\Text Editor\obj\Debug\Text_Editor.Properties.Resources.resources
 G:\IDE\Text Editor\obj\Debug\Text Editor.csproj.GenerateResource.Cache

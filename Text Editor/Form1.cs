@@ -386,55 +386,67 @@ namespace Text_Editor
         private void indentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textarea.BeginUndoAction();
-            multiPurposeFunction("\r\n", "\n\t", 1);
+            doPurposeFunction( "\t", 1);
             textarea.EndUndoAction();
         }
         private void outdentToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             textarea.BeginUndoAction();
-            multiPurposeFunction("\n\t", "\r\n", 0);
+            undoPurposeFunction("\t","");
            
             textarea.EndUndoAction();
         }
         private void commentToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             this.textarea.BeginUndoAction();
-            multiPurposeFunction("\r\n", "\n# ", 1);
+            doPurposeFunction( "# ", 2);
             this.textarea.EndUndoAction();
         }
         private void uncommentToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             this.textarea.BeginUndoAction();
-            multiPurposeFunction("\n# ", "\r\n", 0);
+            undoPurposeFunction("# ","");
             this.textarea.EndUndoAction();
         }
-        private void multiPurposeFunction(String find, String replce, int n)    //Used for indent, outdent,comment and uncomment
+        private void doPurposeFunction(String insert, int n)    //Used for indent, outdent,comment and uncomment
         {
-            textarea.TargetEnd = textarea.SelectionEnd + 2  ;
-            int end = textarea.TargetEnd;
-            int i = 0;
-            textarea.TargetStart = textarea.SelectionStart - 2 ;
-
-            while (textarea.SearchInTarget(find) != -1)
-            {
-
-                textarea.ReplaceTarget(replce);
-
-
-                textarea.TargetStart = textarea.SelectionStart - 2;
-                textarea.TargetEnd = end + i;
-                if (n == 0)
-                    continue;
-                else
-                    i = i + 1;
+            int start = textarea.SelectionStart -1;
+            int end = textarea.SelectionEnd;
             
+            int storeStart = start;
+            char c;
+            while(end>start)
+            {
+                 c = (char)textarea.GetCharAt(start);
+                if(c == '\n')
+                {
+                    textarea.InsertText(start + 1, insert);
+                    end += n;
+                }
+                start++;
             }
-
-            textarea.TargetStart = textarea.SelectionStart;
-
-
-            textarea.TargetEnd = end;
+            if (textarea.SelectionStart == 0)
+                start = textarea.SelectionStart;
+            else
+                start = textarea.SelectionStart - 1;
+            if(storeStart == 0)
+            {
+                textarea.InsertText(0,insert);
+            }
+            textarea.SetSelection(end, storeStart);
         }   
+        private void undoPurposeFunction(String find, String replace)
+        {
+            textarea.TargetStart = textarea.SelectionStart;
+            textarea.TargetEnd = textarea.SelectionEnd;
+            while(textarea.SearchInTarget(find)!=-1)
+            {
+                textarea.ReplaceTarget(replace);
+                textarea.TargetStart = textarea.SelectionStart;
+                textarea.TargetEnd = textarea.SelectionEnd;
+            }
+            
+        }
         #endregion 
         #region View
         private void zoomInToolStripMenuItem_Click(object sender, EventArgs e)
