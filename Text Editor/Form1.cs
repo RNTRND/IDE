@@ -386,54 +386,54 @@ namespace Text_Editor
         private void indentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             textarea.BeginUndoAction();
-
-            multiPurposeFunction("\n", "\t", 1);
-            multiPurposeFunction("\n", "\t", 1);
-
+            multiPurposeFunction("\r\n", "\n\t", 1);
             textarea.EndUndoAction();
         }
         private void outdentToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             textarea.BeginUndoAction();
-            multiPurposeFunction("\t", "\n", 0);
-            multiPurposeFunction("\t", "\n", 0);
-            multiPurposeFunction("\t", "\n", 0);
+            multiPurposeFunction("\n\t", "\r\n", 0);
+           
             textarea.EndUndoAction();
         }
         private void commentToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             this.textarea.BeginUndoAction();
-
-            multiPurposeFunction("\n", "# ", 1);
-            multiPurposeFunction("\n", "# ", 1);
-
+            multiPurposeFunction("\r\n", "\n# ", 1);
             this.textarea.EndUndoAction();
         }
         private void uncommentToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             this.textarea.BeginUndoAction();
-            multiPurposeFunction("# ", "\n", 0);
-            multiPurposeFunction("# ", "\n", 0);
+            multiPurposeFunction("\n# ", "\r\n", 0);
             this.textarea.EndUndoAction();
         }
         private void multiPurposeFunction(String find, String replce, int n)    //Used for indent, outdent,comment and uncomment
         {
-            textarea.TargetStart = textarea.SelectionStart - n;
-            textarea.TargetEnd = textarea.SelectionEnd;
+            textarea.TargetEnd = textarea.SelectionEnd + 2  ;
             int end = textarea.TargetEnd;
+            int i = 0;
+            textarea.TargetStart = textarea.SelectionStart - 2 ;
+
             while (textarea.SearchInTarget(find) != -1)
             {
+
                 textarea.ReplaceTarget(replce);
 
 
-                textarea.TargetStart = textarea.SelectionStart;
-                textarea.TargetEnd = end;
-
+                textarea.TargetStart = textarea.SelectionStart - 2;
+                textarea.TargetEnd = end + i;
+                if (n == 0)
+                    continue;
+                else
+                    i = i + 1;
+            
             }
-            textarea.TargetStart = 0;
-            textarea.TargetEnd = 0;
+
+            textarea.TargetStart = textarea.SelectionStart;
 
 
+            textarea.TargetEnd = end;
         }   
         #endregion 
         #region View
