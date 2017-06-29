@@ -522,13 +522,13 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.aboutToolStripMenuItem.Text = "&About";
             // 
             // bahubaliHelpToolStripMenuItem
             // 
             this.bahubaliHelpToolStripMenuItem.Name = "bahubaliHelpToolStripMenuItem";
-            this.bahubaliHelpToolStripMenuItem.Size = new System.Drawing.Size(178, 26);
+            this.bahubaliHelpToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.bahubaliHelpToolStripMenuItem.Text = "&Bahubali Help";
             // 
             // toolsToolStripMenuItem
